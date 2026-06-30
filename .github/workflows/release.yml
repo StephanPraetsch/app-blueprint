@@ -20,11 +20,11 @@ jobs:
       tag: ${{ steps.bump.outputs.tag }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 26
       - name: Enable Corepack
@@ -63,11 +63,11 @@ jobs:
             build_script: dist:mac
     steps:
       - name: Checkout tag
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: ${{ needs.bump-version.outputs.tag }}
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 26
       - name: Enable Corepack
@@ -79,7 +79,7 @@ jobs:
       - name: Build installers
         run: yarn ${{ matrix.build_script }}
       - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: installers-${{ matrix.os }}
           path: release/**
@@ -89,14 +89,18 @@ jobs:
       - build-installers
     runs-on: ubuntu-latest
     steps:
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 26
       - name: Download artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh run download "${{ github.run_id }}" --dir artifacts
       - name: Publish GitHub release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ needs.bump-version.outputs.tag }}
-          name: ${{ needs.bump-version.outputs.tag }}
-          generate_release_notes: true
-          files: artifacts/**/*
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="${{ needs.bump-version.outputs.tag }}"
+          gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --title "$TAG" --generate-notes
+          find artifacts -type f -print0 | xargs -0 gh release upload "$TAG" --clobber
