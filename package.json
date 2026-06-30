@@ -1,0 +1,61 @@
+{
+  "name": "app-blueprint",
+  "version": "0.1.0",
+  "description": "Cross-platform desktop UI app with Electron and TypeScript",
+  "main": "dist/main.js",
+  "author": "",
+  "license": "MIT",
+  "private": true,
+  "engines": {
+    "node": ">=26.x"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "yarn build && electron .",
+    "start": "electron .",
+    "dist": "yarn build && electron-builder",
+    "dist:linux": "yarn build && electron-builder --linux AppImage deb",
+    "dist:win": "yarn build && electron-builder --win nsis",
+    "dist:mac": "yarn build && electron-builder --mac dmg"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.12",
+    "electron": "^33.2.1",
+    "electron-builder": "^25.1.8",
+    "typescript": "^5.9.2"
+  },
+  "build": {
+    "appId": "com.example.appblueprint",
+    "productName": "App Blueprint",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "index.html",
+      "package.json"
+    ],
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "category": "Utility"
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  },
+  "packageManager": "yarn@1.22.22"
+}
