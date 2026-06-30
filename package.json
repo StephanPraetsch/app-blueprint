@@ -19,10 +19,10 @@
     "dist:mac": "yarn build && electron-builder --mac dmg"
   },
   "devDependencies": {
-    "@types/node": "^24.0.12",
-    "electron": "^33.2.1",
-    "electron-builder": "^25.1.8",
-    "typescript": "^5.9.2"
+    "@types/node": "24.13.2",
+    "electron": "43.0.0",
+    "electron-builder": "25.1.8",
+    "typescript": "5.9.3"
   },
   "build": {
     "appId": "com.example.appblueprint",
