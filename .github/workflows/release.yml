@@ -105,4 +105,8 @@ jobs:
           TAG="${{ needs.bump-version.outputs.tag }}"
           REPO="${{ github.repository }}"
           gh release view "$TAG" --repo "$REPO" >/dev/null 2>&1 || gh release create "$TAG" --repo "$REPO" --title "$TAG" --generate-notes
-          find artifacts -type f -print0 | xargs -0 gh release upload "$TAG" --repo "$REPO" --clobber
+          while IFS= read -r -d '' file; do
+            asset_name="${file#artifacts/}"
+            asset_name="${asset_name//\//-}"
+            gh release upload "$TAG" "$file#$asset_name" --repo "$REPO" --clobber
+          done < <(find artifacts -type f -print0)
