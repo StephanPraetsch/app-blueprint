@@ -46,11 +46,32 @@ sudo dpkg -i App.Blueprint-<version>-linux.deb
 sudo apt -f install
 ```
 
+Check version
+
+```bash
+app-blueprint --version
+```
+
+Uninstall the app
+
+```bash
+sudo apt remove app-blueprint
+```
+
+To remove app data and config too:
+
+```bash
+sudo apt purge app-blueprint
+```
+
 ### Windows
 
 Run `App.Blueprint-<version>-windows.exe` and follow the installer.
+
+Uninstall `App Blueprint` from `Settings` -> `Apps` -> `Installed apps`.
 
 ### macOS
 
 Open `App.Blueprint-<version>-macos.dmg`, then drag the app to `Applications`.
 
+Delete `App Blueprint` from `Applications`.
