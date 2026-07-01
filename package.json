@@ -29,6 +29,11 @@
   "build": {
     "appId": "com.example.appblueprint",
     "productName": "App Blueprint",
+    "compression": "maximum",
+    "electronLanguages": [
+      "en-US",
+      "de"
+    ],
     "directories": {
       "output": "release"
     },
