@@ -107,4 +107,4 @@ jobs:
           gh release view "$TAG" --repo "$REPO" >/dev/null 2>&1 || gh release create "$TAG" --repo "$REPO" --title "$TAG" --generate-notes
           while IFS= read -r -d '' file; do
             gh release upload "$TAG" "$file" --repo "$REPO" --clobber
-          done < <(find artifacts -maxdepth 2 -type f \( -name "*.AppImage" -o -name "*.exe" -o -name "*.dmg" \))
+          done < <(find artifacts -mindepth 3 -maxdepth 3 -type f \( -name "*.AppImage" -o -name "*.exe" -o -name "*.dmg" \) -print0)
