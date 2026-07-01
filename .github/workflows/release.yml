@@ -57,7 +57,7 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            bu^ild_script: dist:linux:appimage
+            build_script: dist:linux:appimage
           - os: windows-latest
             build_script: dist:win
           - os: macos-latest
