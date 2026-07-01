@@ -16,6 +16,7 @@
     "dist": "yarn build && electron-builder --publish=never",
     "dist:linux": "yarn build && electron-builder --linux AppImage deb --publish=never",
     "dist:linux:appimage": "yarn build && electron-builder --linux AppImage --publish=never",
+    "dist:linux:deb": "yarn build && electron-builder --linux deb --publish=never",
     "dist:win": "yarn build && electron-builder --win nsis --publish=never",
     "dist:mac": "yarn build && electron-builder --mac dmg --publish=never"
   },

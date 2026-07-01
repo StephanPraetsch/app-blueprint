@@ -57,7 +57,7 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            build_script: dist:linux:appimage
+            build_script: dist:linux:deb
           - os: windows-latest
             build_script: dist:win
           - os: macos-latest
@@ -107,9 +107,9 @@ jobs:
         include:
           - os: ubuntu-latest
             artifact_name: installers-ubuntu-latest
-            find_pattern: '*.appimage'
+            find_pattern: '*.deb'
             asset_os: linux
-            asset_ext: AppImage
+            asset_ext: deb
           - os: windows-latest
             artifact_name: installers-windows-latest
             find_pattern: '*setup*.exe'
