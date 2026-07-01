@@ -104,13 +104,27 @@ jobs:
         run: |
           TAG="${{ needs.bump-version.outputs.tag }}"
           REPO="${{ github.repository }}"
+          VERSION="${TAG#v}"
           gh release view "$TAG" --repo "$REPO" >/dev/null 2>&1 || gh release create "$TAG" --repo "$REPO" --title "$TAG" --generate-notes
+
+          gh release view "$TAG" --repo "$REPO" --json assets --jq '.assets[].name' | while IFS= read -r asset; do
+            if [ -n "$asset" ]; then
+              gh release delete-asset "$TAG" "$asset" --repo "$REPO" --yes
+            fi
+          done
+
           LINUX_FILE="$(find artifacts -type f -iname '*.appimage' | head -n 1)"
           WINDOWS_FILE="$(find artifacts -type f -iname '*setup*.exe' | head -n 1)"
           MAC_FILE="$(find artifacts -type f -iname '*.dmg' | head -n 1)"
 
-          for file in "$LINUX_FILE" "$WINDOWS_FILE" "$MAC_FILE"; do
-            if [ -n "$file" ]; then
-              gh release upload "$TAG" "$file" --repo "$REPO" --clobber
-            fi
-          done
+          [ -n "$LINUX_FILE" ] || { echo "Missing Linux AppImage"; exit 1; }
+          [ -n "$WINDOWS_FILE" ] || { echo "Missing Windows Setup EXE"; exit 1; }
+          [ -n "$MAC_FILE" ] || { echo "Missing macOS DMG"; exit 1; }
+
+          LINUX_NAME="App.Blueprint-${VERSION}-linux.AppImage"
+          WINDOWS_NAME="App.Blueprint-${VERSION}-windows.exe"
+          MAC_NAME="App.Blueprint-${VERSION}-macos.dmg"
+
+          gh release upload "$TAG" "$LINUX_FILE#$LINUX_NAME" --repo "$REPO" --clobber
+          gh release upload "$TAG" "$WINDOWS_FILE#$WINDOWS_NAME" --repo "$REPO" --clobber
+          gh release upload "$TAG" "$MAC_FILE#$MAC_NAME" --repo "$REPO" --clobber
