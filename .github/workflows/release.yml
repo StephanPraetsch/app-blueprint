@@ -57,7 +57,7 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            build_script: dist:linux
+            bu^ild_script: dist:linux:appimage
           - os: windows-latest
             build_script: dist:win
           - os: macos-latest
@@ -106,7 +106,5 @@ jobs:
           REPO="${{ github.repository }}"
           gh release view "$TAG" --repo "$REPO" >/dev/null 2>&1 || gh release create "$TAG" --repo "$REPO" --title "$TAG" --generate-notes
           while IFS= read -r -d '' file; do
-            asset_name="${file#artifacts/}"
-            asset_name="${asset_name//\//-}"
-            gh release upload "$TAG" "$file#$asset_name" --repo "$REPO" --clobber
-          done < <(find artifacts -type f -print0)
+            gh release upload "$TAG" "$file" --repo "$REPO" --clobber
+          done < <(find artifacts -maxdepth 2 -type f \( -name "*.AppImage" -o -name "*.exe" -o -name "*.dmg" \))
