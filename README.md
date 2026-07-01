@@ -2,31 +2,6 @@
 
 Cross-platform desktop app with Electron and TypeScript.
 
-## Requirements
-
-- Node 26 (`.nvmrc` is included)
-- Yarn
-
-## Development mode
-
-```bash
-nvm use
-yarn install
-yarn dev
-```
-
-## Release builds
-
-Local release build commands:
-
-```bash
-yarn dist:linux
-yarn dist:win
-yarn dist:mac
-```
-
-Generated installers are written to `release/`.
-
 ## Install the app
 
 Download the installer for your operating system from the [GitHub release](https://github.com/StephanPraetsch/app-blueprint/releases/).
@@ -75,3 +50,30 @@ Uninstall `App Blueprint` from `Settings` -> `Apps` -> `Installed apps`.
 Open `App.Blueprint-<version>-macos.dmg`, then drag the app to `Applications`.
 
 Delete `App Blueprint` from `Applications`.
+
+## Development
+
+### Requirements
+
+- Node 26 (`.nvmrc` is included)
+- Yarn
+
+### start development server
+
+```bash
+nvm use
+yarn install
+yarn dev
+```
+
+## Release builds
+
+Local release build commands:
+
+```bash
+yarn dist:linux
+yarn dist:win
+yarn dist:mac
+```
+
+Generated installers are written to `release/`.
