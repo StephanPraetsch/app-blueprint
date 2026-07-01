@@ -105,6 +105,12 @@ jobs:
           TAG="${{ needs.bump-version.outputs.tag }}"
           REPO="${{ github.repository }}"
           gh release view "$TAG" --repo "$REPO" >/dev/null 2>&1 || gh release create "$TAG" --repo "$REPO" --title "$TAG" --generate-notes
-          while IFS= read -r -d '' file; do
-            gh release upload "$TAG" "$file" --repo "$REPO" --clobber
-          done < <(find artifacts -type f \( -name "*.AppImage" -o -name "*Setup*.exe" -o -name "*.dmg" \) -print0)
+          LINUX_FILE="$(find artifacts -type f -iname '*.appimage' | head -n 1)"
+          WINDOWS_FILE="$(find artifacts -type f -iname '*setup*.exe' | head -n 1)"
+          MAC_FILE="$(find artifacts -type f -iname '*.dmg' | head -n 1)"
+
+          for file in "$LINUX_FILE" "$WINDOWS_FILE" "$MAC_FILE"; do
+            if [ -n "$file" ]; then
+              gh release upload "$TAG" "$file" --repo "$REPO" --clobber
+            fi
+          done
