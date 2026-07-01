@@ -84,47 +84,55 @@ jobs:
         with:
           name: installers-${{ matrix.os }}
           path: release/**
+  prepare-release:
+    needs: bump-version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ensure GitHub release exists
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="${{ needs.bump-version.outputs.tag }}"
+          REPO="${{ github.repository }}"
+          gh release view "$TAG" --repo "$REPO" >/dev/null 2>&1 || gh release create "$TAG" --repo "$REPO" --title "$TAG" --generate-notes
   publish-release:
     needs:
       - bump-version
       - build-installers
-    runs-on: ubuntu-latest
+      - prepare-release
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            artifact_name: installers-ubuntu-latest
+            find_pattern: '*.appimage'
+            asset_os: linux
+            asset_ext: AppImage
+          - os: windows-latest
+            artifact_name: installers-windows-latest
+            find_pattern: '*setup*.exe'
+            asset_os: windows
+            asset_ext: exe
+          - os: macos-latest
+            artifact_name: installers-macos-latest
+            find_pattern: '*.dmg'
+            asset_os: macos
+            asset_ext: dmg
     steps:
-      - name: Setup Node
-        uses: actions/setup-node@v5
-        with:
-          node-version: 26
-      - name: Download artifacts
+      - name: Download OS artifact
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh run download "${{ github.run_id }}" --repo "${{ github.repository }}" --dir artifacts
-      - name: Publish GitHub release
+        run: gh run download "${{ github.run_id }}" "${{ matrix.artifact_name }}" --repo "${{ github.repository }}" --dir artifacts
+      - name: Upload OS installer
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           TAG="${{ needs.bump-version.outputs.tag }}"
           REPO="${{ github.repository }}"
           VERSION="${TAG#v}"
-          gh release view "$TAG" --repo "$REPO" >/dev/null 2>&1 || gh release create "$TAG" --repo "$REPO" --title "$TAG" --generate-notes
-
-          gh release view "$TAG" --repo "$REPO" --json assets --jq '.assets[].name' | while IFS= read -r asset; do
-            if [ -n "$asset" ]; then
-              gh release delete-asset "$TAG" "$asset" --repo "$REPO" --yes
-            fi
-          done
-
-          LINUX_FILE="$(find artifacts -type f -iname '*.appimage' | head -n 1)"
-          WINDOWS_FILE="$(find artifacts -type f -iname '*setup*.exe' | head -n 1)"
-          MAC_FILE="$(find artifacts -type f -iname '*.dmg' | head -n 1)"
-
-          [ -n "$LINUX_FILE" ] || { echo "Missing Linux AppImage"; exit 1; }
-          [ -n "$WINDOWS_FILE" ] || { echo "Missing Windows Setup EXE"; exit 1; }
-          [ -n "$MAC_FILE" ] || { echo "Missing macOS DMG"; exit 1; }
-
-          LINUX_NAME="App.Blueprint-${VERSION}-linux.AppImage"
-          WINDOWS_NAME="App.Blueprint-${VERSION}-windows.exe"
-          MAC_NAME="App.Blueprint-${VERSION}-macos.dmg"
-
-          gh release upload "$TAG" "$LINUX_FILE#$LINUX_NAME" --repo "$REPO" --clobber
-          gh release upload "$TAG" "$WINDOWS_FILE#$WINDOWS_NAME" --repo "$REPO" --clobber
-          gh release upload "$TAG" "$MAC_FILE#$MAC_NAME" --repo "$REPO" --clobber
+          FILE="$(find artifacts -type f -iname "${{ matrix.find_pattern }}" | head -n 1)"
+          [ -n "$FILE" ] || { echo "Missing installer matching ${{ matrix.find_pattern }}"; find artifacts -type f; exit 1; }
+          ASSET_NAME="App.Blueprint-${VERSION}-${{ matrix.asset_os }}.${{ matrix.asset_ext }}"
+          gh release upload "$TAG" "$FILE#$ASSET_NAME" --repo "$REPO" --clobber
