@@ -111,6 +111,15 @@ jobs:
           [ -n "$WINDOWS_FILE" ] || { echo 'Missing Windows Setup EXE'; find artifacts -type f; exit 1; }
           [ -n "$MAC_FILE" ] || { echo 'Missing macOS DMG'; find artifacts -type f; exit 1; }
 
-          gh release upload "$TAG" "$LINUX_FILE#App.Blueprint-${VERSION}-linux.deb" --repo "$REPO" --clobber
-          gh release upload "$TAG" "$WINDOWS_FILE#App.Blueprint-${VERSION}-windows.exe" --repo "$REPO" --clobber
-          gh release upload "$TAG" "$MAC_FILE#App.Blueprint-${VERSION}-macos.dmg" --repo "$REPO" --clobber
+          mkdir -p release-upload
+          LINUX_ASSET="release-upload/App.Blueprint-${VERSION}-linux.deb"
+          WINDOWS_ASSET="release-upload/App.Blueprint-${VERSION}-windows.exe"
+          MAC_ASSET="release-upload/App.Blueprint-${VERSION}-macos.dmg"
+
+          cp "$LINUX_FILE" "$LINUX_ASSET"
+          cp "$WINDOWS_FILE" "$WINDOWS_ASSET"
+          cp "$MAC_FILE" "$MAC_ASSET"
+
+          gh release upload "$TAG" "$LINUX_ASSET" --repo "$REPO" --clobber
+          gh release upload "$TAG" "$WINDOWS_ASSET" --repo "$REPO" --clobber
+          gh release upload "$TAG" "$MAC_ASSET" --repo "$REPO" --clobber
