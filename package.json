@@ -1,6 +1,6 @@
 {
   "name": "app-blueprint",
-  "version": "0.1.15",
+  "version": "0.1.16",
   "description": "Cross-platform desktop UI app with Electron and TypeScript",
   "main": "dist/main.js",
   "author": "Stephan Praetsch <noreply@example.com>",
