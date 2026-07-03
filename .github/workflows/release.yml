@@ -77,7 +77,31 @@ jobs:
         run: corepack prepare yarn@1.22.22 --activate
       - name: Install dependencies
         run: yarn install --frozen-lockfile
+      - name: Import Apple code-signing certificate
+        if: matrix.os == 'macos-latest'
+        uses: apple-actions/import-codesign-certs@v3
+        with:
+          p12-file-base64: ${{ secrets.APPLE_CERTIFICATE_P12_BASE64 }}
+          p12-password: ${{ secrets.APPLE_CERTIFICATE_P12_PASSWORD }}
+      - name: Verify macOS signing secrets
+        if: matrix.os == 'macos-latest'
+        env:
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          [ -n "$APPLE_ID" ] || { echo 'Missing APPLE_ID secret'; exit 1; }
+          [ -n "$APPLE_APP_SPECIFIC_PASSWORD" ] || { echo 'Missing APPLE_APP_SPECIFIC_PASSWORD secret'; exit 1; }
+          [ -n "$APPLE_TEAM_ID" ] || { echo 'Missing APPLE_TEAM_ID secret'; exit 1; }
       - name: Build installers
+        if: matrix.os != 'macos-latest'
+        run: yarn ${{ matrix.build_script }}
+      - name: Build installers (macOS)
+        if: matrix.os == 'macos-latest'
+        env:
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
         run: yarn ${{ matrix.build_script }}
       - name: Upload artifacts
         uses: actions/upload-artifact@v7
