@@ -57,7 +57,9 @@
     "mac": {
       "target": [
         "dmg"
-      ]
+      ],
+      "sign": null,
+      "notarize": false
     },
     "nsis": {
       "oneClick": false,
