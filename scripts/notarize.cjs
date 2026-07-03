@@ -6,13 +6,25 @@ module.exports = async function notarizeApp(context) {
     return
   }
 
+  const appleIdPassword =
+    process.env.APPLE_APP_SPECIFIC_PASSWORD || process.env.APPLE_ID_PASSWORD
+
   const requiredEnvVars = [
     'APPLE_ID',
-    'APPLE_APP_SPECIFIC_PASSWORD',
+    'APPLE_APP_SPECIFIC_PASSWORD (or APPLE_ID_PASSWORD)',
     'APPLE_TEAM_ID'
   ]
 
-  const missingEnvVars = requiredEnvVars.filter((name) => !process.env[name])
+  const missingEnvVars = []
+  if (!process.env.APPLE_ID) {
+    missingEnvVars.push(requiredEnvVars[0])
+  }
+  if (!appleIdPassword) {
+    missingEnvVars.push(requiredEnvVars[1])
+  }
+  if (!process.env.APPLE_TEAM_ID) {
+    missingEnvVars.push(requiredEnvVars[2])
+  }
 
   if (missingEnvVars.length > 0) {
     if (process.env.CI === 'true') {
@@ -30,7 +42,7 @@ module.exports = async function notarizeApp(context) {
     appBundleId: packager.appInfo.id,
     appPath,
     appleId: process.env.APPLE_ID,
-    appleIdPassword: process.env.APPLE_APP_SPECIFIC_PASSWORD,
+    appleIdPassword,
     teamId: process.env.APPLE_TEAM_ID
   })
 }
