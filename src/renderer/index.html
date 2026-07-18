@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>App Blueprint</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 2rem;
+        line-height: 1.5;
+      }
+
+      .hello-label {
+        margin: 0.3rem 0;
+      }
+
+      #update-button {
+        margin-top: 1rem;
+        padding: 0.5rem 0.8rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>App Blueprint</h1>
+    <p class="hello-label">Hello World</p>
+    <p class="hello-label">Hello World from TypeScript</p>
+    <p>Current time: <strong id="current-time">--:--:--</strong></p>
+    <button id="update-button" type="button">Update Something</button>
+    <p id="update-result">Updated 0 time(s)</p>
+
+    <script type="module" src="./renderer.js"></script>
+  </body>
+</html>
+

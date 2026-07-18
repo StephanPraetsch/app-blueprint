@@ -1,79 +1,34 @@
 # App Blueprint
 
-Cross-platform desktop app with Electron and TypeScript.
+Desktop app blueprint using TypeScript, Node.js 26, Yarn, and Electron.
 
-## Install the app
+## Requirements
 
-Download the installer for your operating system from the [GitHub release](https://github.com/StephanPraetsch/app-blueprint/releases/).
+- Node.js 26.x
+- Yarn 1.22.x
 
-### Ubuntu/Linux
+Use `nvm use` in this folder to switch to the Node version from `.nvmrc`.
 
-Install the `.deb` package:
-
-```bash
-sudo apt install ./App.Blueprint-<version>-linux.deb
-```
-
-If needed, you can also use:
-
-```bash
-sudo dpkg -i App.Blueprint-<version>-linux.deb
-sudo apt -f install
-```
-
-Check version
-
-```bash
-app-blueprint --version
-```
-
-Uninstall the app
-
-```bash
-sudo apt remove app-blueprint
-```
-
-To remove app data and config too:
-
-```bash
-sudo apt purge app-blueprint
-```
-
-### Windows
-
-Run `App.Blueprint-<version>-windows.exe` and follow the installer.
-
-Uninstall `App Blueprint` from `Settings` -> `Apps` -> `Installed apps`.
-
-### macOS
-
-Open `App.Blueprint-<version>-macos.dmg`, then drag the app to `Applications`.
-
-Delete `App Blueprint` from `Applications`.
-
-## Development
-
-### Requirements
-
-- Node 26 (`.nvmrc` is included)
-- Yarn
-
-### start development server
+## Start in development mode
 
 ```bash
 nvm use
+corepack enable
+corepack prepare yarn@1.22.22 --activate
 yarn install
 yarn dev
 ```
 
-## Release builds
+The app includes:
+- Hello World labels
+- Current time label (updates every second)
+- `Update Something` button that updates a counter
 
-Local release build commands:
+## Other useful commands
 
 ```bash
-yarn dist:linux
-yarn dist:win
-yarn dist:mac
+yarn typecheck
+yarn build
+yarn start
 ```
 
-Generated installers are written to `release/`.

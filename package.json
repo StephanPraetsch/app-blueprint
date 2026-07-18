@@ -1,80 +1,58 @@
 {
   "name": "app-blueprint",
-  "version": "0.1.24",
-  "description": "Cross-platform desktop UI app with Electron and TypeScript",
-  "main": "dist/main.js",
-  "author": "Stephan Praetsch <noreply@example.com>",
-  "license": "MIT",
+  "version": "0.1.0",
+  "description": "Desktop app blueprint with TypeScript and Electron",
+  "main": "dist/main/main.js",
+  "type": "module",
   "private": true,
+  "packageManager": "yarn@1.22.22",
   "engines": {
-    "node": ">=26.x"
+    "node": "26.x"
   },
+  "engineStrict": true,
   "scripts": {
-    "build": "tsc",
+    "preinstall": "node scripts/check-node-version.mjs",
+    "clean": "node scripts/clean.mjs",
+    "typecheck": "tsc --noEmit",
+    "build": "yarn clean && tsc --project tsconfig.json && node scripts/copy-static-files.mjs",
     "dev": "yarn build && electron .",
     "start": "electron .",
-    "dist": "yarn build && electron-builder --publish=never",
-    "dist:linux": "yarn build && electron-builder --linux AppImage deb --publish=never",
-    "dist:linux:appimage": "yarn build && electron-builder --linux AppImage --publish=never",
-    "dist:linux:deb": "yarn build && electron-builder --linux deb --publish=never",
-    "dist:win": "yarn build && electron-builder --win nsis --publish=never",
-    "dist:mac": "yarn build && electron-builder --mac dmg --universal --publish=never"
+    "dist:linux": "yarn build && electron-builder --linux AppImage deb --publish never --config.directories.output=release/ubuntu",
+    "dist:mac": "yarn build && electron-builder --mac dmg zip --publish never --config.directories.output=release/mac",
+    "dist:win": "yarn build && electron-builder --win nsis zip --publish never --config.directories.output=release/windows"
   },
   "devDependencies": {
-    "@electron/notarize": "3.1.0",
-    "@types/node": "24.13.2",
-    "electron": "43.0.0",
-    "electron-builder": "26.15.3",
-    "typescript": "5.9.3"
+    "electron": "^32.0.0",
+    "electron-builder": "^24.13.3",
+    "typescript": "^5.6.2"
   },
   "build": {
-    "appId": "com.example.appblueprint",
-    "productName": "App Blueprint",
-    "afterSign": "scripts/notarize.cjs",
-    "compression": "maximum",
-    "electronLanguages": [
-      "en-US",
-      "de"
-    ],
-    "directories": {
-      "output": "release"
-    },
+    "appId": "com.stephan.appblueprint",
+    "productName": "AppBlueprint",
     "files": [
       "dist/**/*",
-      "index.html",
       "package.json"
     ],
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "category": "public.app-category.utilities"
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "zip"
+      ]
+    },
     "linux": {
       "target": [
         "AppImage",
         "deb"
       ],
       "category": "Utility"
-    },
-    "win": {
-      "target": [
-        "nsis"
-      ]
-    },
-    "mac": {
-      "target": [
-        {
-          "target": "dmg",
-          "arch": [
-            "universal"
-          ]
-        }
-      ],
-      "category": "public.app-category.utilities",
-      "hardenedRuntime": true,
-      "gatekeeperAssess": false,
-      "entitlements": "entitlements.mac.plist",
-      "entitlementsInherit": "entitlements.mac.inherit.plist"
-    },
-    "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true
     }
-  },
-  "packageManager": "yarn@1.22.22"
+  }
 }
+
