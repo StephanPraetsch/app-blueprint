@@ -14,11 +14,51 @@
       .hello-label {
         margin: 0.3rem 0;
       }
+
+      .panel {
+        margin-top: 1rem;
+      }
+
+      .random-button {
+        padding: 0.5rem 0.8rem;
+        cursor: pointer;
+      }
+
+      .value-label {
+        margin: 0.5rem 0;
+        font-family: "Courier New", monospace;
+      }
     </style>
   </head>
   <body>
     <h1>App Blueprint</h1>
     <p class="hello-label">Hello World</p>
+
+    <div class="panel">
+      <button id="random-button" class="random-button" type="button">Print Click Count</button>
+      <p class="value-label">Current time: <span id="current-time">--:--:--</span></p>
+      <p class="value-label">Click output: <span id="random-output">(none yet)</span></p>
+    </div>
+
+    <script>
+      const currentTime = document.getElementById("current-time");
+      const randomOutput = document.getElementById("random-output");
+      const randomButton = document.getElementById("random-button");
+      let clickCount = 0;
+
+      const updateTime = () => {
+        currentTime.textContent = new Date().toLocaleTimeString();
+      };
+
+      randomButton.addEventListener("click", () => {
+        clickCount += 1;
+        const message = `Clicked ${clickCount} time${clickCount === 1 ? "" : "s"}`;
+        randomOutput.textContent = message;
+        console.log(clickCount);
+      });
+
+      updateTime();
+      setInterval(updateTime, 1000);
+    </script>
   </body>
 </html>
-
