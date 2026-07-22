@@ -12,7 +12,6 @@
   },
   "engineStrict": true,
   "scripts": {
-    "preinstall": "node scripts/check-node-version.mjs",
     "clean": "node scripts/clean.mjs",
     "typecheck": "tsc --noEmit",
     "build": "yarn clean && tsc --project tsconfig.json && node scripts/copy-static-files.mjs",
