@@ -25,7 +25,7 @@ Workflow file: `.github/workflows/create-release.yml`
 ## Artifacts
 
 - Linux: 
-  - `.AppImage`
+  - `.AppImage`: requires `sudo apt install libfuse2`
     ```text
     chmod +x AppBlueprint-0.1.0.AppImage
     ./AppBlueprint-0.1.0.AppImage
