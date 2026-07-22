@@ -21,8 +21,16 @@ export class ClickCountApplicationService {
     this.resetRepository();
   }
 
+  public getCurrentClickCount(): number {
+    return this.getRepository().getCurrent();
+  }
+
   public incrementClickCount(): number {
     return this.getRepository().incrementAndGet();
+  }
+
+  public resetClickCount(): number {
+    return this.getRepository().resetAndGet();
   }
 
   public shutdown(): void {
@@ -45,4 +53,3 @@ export class ClickCountApplicationService {
     this.activeRepositoryPath = null;
   }
 }
-

@@ -1,14 +1,22 @@
 import {ClickCounter} from "./renderer/clickCounter.js";
 import {Clock} from "./renderer/clock.js";
 import {getRequiredElement} from "./renderer/dom.js";
-import {incrementClickCount} from "./renderer/ipcClickCountGateway.js";
+import {getCurrentClickCount, incrementClickCount, resetClickCount} from "./renderer/ipcClickCountGateway.js";
 
 const currentTimeElement = getRequiredElement<HTMLElement>("current-time");
 const clickOutputElement = getRequiredElement<HTMLElement>("click-output");
 const clickCountButton = getRequiredElement<HTMLButtonElement>("click-count-button");
+const resetClickCountButton = getRequiredElement<HTMLButtonElement>("reset-click-count-button");
 
 const clock = new Clock(currentTimeElement);
-const clickCounter = new ClickCounter(clickCountButton, clickOutputElement, incrementClickCount);
+const clickCounter = new ClickCounter(
+  clickCountButton,
+  resetClickCountButton,
+  clickOutputElement,
+  getCurrentClickCount,
+  incrementClickCount,
+  resetClickCount
+);
 
 clock.start();
-clickCounter.start();
+await clickCounter.start();

@@ -1,4 +1,5 @@
 export const IPC_CHANNELS = {
-  incrementClickCount: "click-count:increment"
+  getCurrentClickCount: "click-count:get-current",
+  incrementClickCount: "click-count:increment",
+  resetClickCount: "click-count:reset"
 } as const;
-
