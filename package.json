@@ -2,6 +2,7 @@
   "name": "app-blueprint",
   "version": "0.1.0",
   "description": "Desktop app blueprint with TypeScript and Electron",
+  "author": "Stephan Praetsch <stephan@example.com>",
   "main": "dist/main/main.js",
   "type": "module",
   "private": true,
