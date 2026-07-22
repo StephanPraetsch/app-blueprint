@@ -62,65 +62,11 @@ jobs:
       - name: Activate Yarn
         run: corepack prepare yarn@1.22.22 --activate
 
-      - name: Prepare macOS signing certificate
-        if: matrix.os == 'macos-latest'
-        env:
-          BUILD_CERTIFICATE_BASE64: ${{ secrets.MACOS_CERTIFICATE_P12_BASE64 }}
-        run: |
-          if [ -z "$BUILD_CERTIFICATE_BASE64" ]; then
-            echo "Missing secret: MACOS_CERTIFICATE_P12_BASE64"
-            exit 1
-          fi
-
-          CERT_PATH="$RUNNER_TEMP/macos-certificate.p12"
-          python - <<'PY'
-import base64
-import os
-from pathlib import Path
-
-certificate = os.environ["BUILD_CERTIFICATE_BASE64"]
-target = Path(os.environ["RUNNER_TEMP"]) / "macos-certificate.p12"
-target.write_bytes(base64.b64decode(certificate))
-PY
-
-          echo "CSC_LINK=file://$CERT_PATH" >> "$GITHUB_ENV"
-
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
       - name: Build release package
-        env:
-          CSC_KEY_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
         run: yarn ${{ matrix.build_script }}
-
-      - name: Notarize and staple macOS artifacts
-        if: matrix.os == 'macos-latest'
-        env:
-          APPLE_ID: ${{ secrets.APPLE_ID }}
-          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-        run: |
-          if [ -z "$APPLE_ID" ] || [ -z "$APPLE_APP_SPECIFIC_PASSWORD" ] || [ -z "$APPLE_TEAM_ID" ]; then
-            echo "Missing Apple notarization secrets (APPLE_ID, APPLE_APP_SPECIFIC_PASSWORD, APPLE_TEAM_ID)"
-            exit 1
-          fi
-
-          shopt -s nullglob
-          files=(release/mac/*.dmg)
-          if [ ${#files[@]} -eq 0 ]; then
-            echo "No DMG files found in release/mac"
-            exit 1
-          fi
-
-          for dmg in "${files[@]}"; do
-            xcrun notarytool submit "$dmg" \
-              --apple-id "$APPLE_ID" \
-              --password "$APPLE_APP_SPECIFIC_PASSWORD" \
-              --team-id "$APPLE_TEAM_ID" \
-              --wait
-            xcrun stapler staple "$dmg"
-            xcrun stapler validate "$dmg"
-          done
 
       - name: Release
         uses: softprops/action-gh-release@v1
