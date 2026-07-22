@@ -24,7 +24,17 @@ Workflow file: `.github/workflows/create-release.yml`
 
 ## Artifacts
 
-- Linux: `.AppImage`, `.deb`
+- Linux: 
+  - `.AppImage`
+    ```text
+    chmod +x AppBlueprint-0.1.0.AppImage
+    ./AppBlueprint-0.1.0.AppImage
+    ```
+  - `.deb`
+    ```text
+    sudo dpkg -i app-blueprint_0.1.0_amd64.deb 
+    sudo apt remove app-blueprint
+    ```
 - macOS: `.dmg`, `.zip`
 - Windows: `.exe`, `.zip`
 
