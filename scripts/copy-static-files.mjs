@@ -1,5 +1,5 @@
 import {cp, mkdir} from "node:fs/promises";
 
-await mkdir("dist/renderer", { recursive: true });
-await cp("src/renderer/index.html", "dist/renderer/index.html");
+await mkdir("dist", { recursive: true });
+await cp("src/index.html", "dist/index.html");
 
