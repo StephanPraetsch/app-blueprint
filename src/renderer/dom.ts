@@ -3,6 +3,6 @@ export const getRequiredElement = <T extends Element>(id: string): T => {
   if (!(element instanceof Element)) {
     throw new Error(`Required element with id '${id}' was not found.`);
   }
-  return element as T;
+  return element as unknown as T;
 };
 
