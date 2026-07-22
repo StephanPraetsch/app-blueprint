@@ -20,7 +20,7 @@ yarn dev
 ## Releasing a New Version
 
 ```bash
-yarn version --patch && git push --follow-tags
+yarn version --patch && git push origin HEAD --follow-tags
 ```
 
 ### Linux:
