@@ -40,13 +40,11 @@ jobs:
             build_script: dist:mac
             release_files: |
               release/mac/*.dmg
-              release/mac/*.zip
           - os: windows-latest
             release_suffix: windows
             build_script: dist:win
             release_files: |
               release/windows/*.exe
-              release/windows/*.zip
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout code
