@@ -11,4 +11,3 @@ const clickCounter = new ClickCounter(clickCountButton, clickOutputElement);
 
 clock.start();
 clickCounter.start();
-
