@@ -33,8 +33,8 @@ sudo apt install libfuse2
 ```
 
 ```bash
-chmod +x AppBlueprint-0.1.0.AppImage
-./AppBlueprint-0.1.0.AppImage
+chmod +x app-blueprint-0.1.0.AppImage
+./app-blueprint-0.1.0.AppImage
 ```
 
 #### .deb
@@ -47,8 +47,8 @@ sudo apt remove app-blueprint
 ### macOS: .dmg
 
 ```bash
-xattr -dr com.apple.quarantine "/Applications/AppBlueprint.app"
-open "/Applications/AppBlueprint.app
+xattr -dr com.apple.quarantine "/Applications/app-blueprint.app"
+open "/Applications/app-blueprint.app"
 ```
 
 I don't have a mac developer account, so I can't notarize the app, so I cannot sign it. see https://github.com/electron/notarize
