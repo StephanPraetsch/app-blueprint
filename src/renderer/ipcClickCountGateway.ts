@@ -15,12 +15,24 @@ const getIpcRenderer = (): IpcRenderer => {
   return electronModule.ipcRenderer;
 };
 
-export const incrementClickCount = async (): Promise<number> => {
-  const result = await getIpcRenderer().invoke(IPC_CHANNELS.incrementClickCount);
-  if (typeof result !== "number") {
+const ensureNumber = (value: unknown): number => {
+  if (typeof value !== "number") {
     throw new Error("Invalid click count response.");
   }
-
-  return result;
+  return value;
 };
 
+export const getCurrentClickCount = async (): Promise<number> => {
+  const result = await getIpcRenderer().invoke(IPC_CHANNELS.getCurrentClickCount);
+  return ensureNumber(result);
+};
+
+export const incrementClickCount = async (): Promise<number> => {
+  const result = await getIpcRenderer().invoke(IPC_CHANNELS.incrementClickCount);
+  return ensureNumber(result);
+};
+
+export const resetClickCount = async (): Promise<number> => {
+  const result = await getIpcRenderer().invoke(IPC_CHANNELS.resetClickCount);
+  return ensureNumber(result);
+};
