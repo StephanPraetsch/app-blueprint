@@ -2,6 +2,7 @@ import {app, BrowserWindow} from "electron";
 import fs from "node:fs";
 import path from "node:path";
 import {fileURLToPath} from "node:url";
+import {setupApplicationMenu} from "./main/applicationMenu.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -27,6 +28,10 @@ const createMainWindow = () => {
   window.loadFile(path.join(__dirname, "index.html"));
 };
 app.whenReady().then(() => {
+  setupApplicationMenu({
+    appName: app.name,
+    appVersion: app.getVersion()
+  });
   createMainWindow();
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) {
