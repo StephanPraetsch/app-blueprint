@@ -56,11 +56,7 @@ xattr -dr com.apple.quarantine "/Applications/AppBlueprint.app"
 open "/Applications/AppBlueprint.app
 ```
 
-what is missing:
-* Missing Developer ID Application signing during mac build.
-* Missing notarization and stapling step.
-* Likely missing/incorrect CI secrets for signing/notarization (or they are not being used).
-* Quarantine is present (not root cause alone, but it exposes the signing/notarization problem).
+I don't have a mac developer account, so I can't notarize the app, so I cannot sign it. see https://github.com/electron/notarize
 
 ### Windows: .exe
 
