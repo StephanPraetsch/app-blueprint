@@ -1,6 +1,11 @@
 # App Blueprint
 
-Desktop app blueprint using TypeScript, Node.js 26, Yarn, and Electron.
+Desktop app blueprint 
+* for building cross-platform desktop apps with Electron
+* using TypeScript, Node.js 26, Yarn
+* with a React front-end (TODO)
+* with a SQLite database (TODO)
+* with configuration via menu bar (TODO)
 
 ## Requirements
 
