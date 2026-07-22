@@ -25,8 +25,7 @@ The app includes:
 ## Releasing a New Version
 
 ```bash
-git tag v1.0.0
-git push origin v1.0.0
+yarn version --patch && git push --follow-tags
 ```
 
 ### Linux:
@@ -51,6 +50,17 @@ sudo apt remove app-blueprint
 ```
 
 ### macOS: .dmg
+
+```bash
+xattr -dr com.apple.quarantine "/Applications/AppBlueprint.app"
+open "/Applications/AppBlueprint.app
+```
+
+what is missing:
+* Missing Developer ID Application signing during mac build.
+* Missing notarization and stapling step.
+* Likely missing/incorrect CI secrets for signing/notarization (or they are not being used).
+* Quarantine is present (not root cause alone, but it exposes the signing/notarization problem).
 
 ### Windows: .exe
 
