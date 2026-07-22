@@ -1,6 +1,6 @@
 {
   "name": "app-blueprint",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Desktop app blueprint with TypeScript and Electron",
   "author": "Stephan Praetsch <stephan@example.com>",
   "main": "dist/main/main.js",
@@ -56,4 +56,3 @@
     }
   }
 }
-
