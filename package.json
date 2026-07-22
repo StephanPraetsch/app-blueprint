@@ -3,7 +3,7 @@
   "version": "0.2.5",
   "description": "Desktop app blueprint with TypeScript and Electron",
   "author": "Stephan Praetsch <stephan@example.com>",
-  "main": "dist/main/main.js",
+  "main": "dist/main.js",
   "type": "module",
   "private": true,
   "packageManager": "yarn@1.22.22",
@@ -12,7 +12,6 @@
   },
   "engineStrict": true,
   "scripts": {
-    "preinstall": "node scripts/check-node-version.mjs",
     "clean": "node scripts/clean.mjs",
     "typecheck": "tsc --noEmit",
     "build": "yarn clean && tsc --project tsconfig.json && node scripts/copy-static-files.mjs",
