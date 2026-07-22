@@ -4,21 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>App Blueprint</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 2rem;
-        line-height: 1.5;
-      }
-
-      .hello-label {
-        margin: 0.3rem 0;
-      }
-    </style>
+    <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <h1>App Blueprint</h1>
     <p class="hello-label">Hello World</p>
+
+    <div class="panel">
+      <button id="click-count-button" class="action-button" type="button">Print Click Count</button>
+      <p class="value-label">Current time: <span id="current-time">--:--:--</span></p>
+      <p class="value-label">Click output: <span id="click-output">(none yet)</span></p>
+    </div>
+
+    <script type="module" src="./renderer.js"></script>
   </body>
 </html>
-

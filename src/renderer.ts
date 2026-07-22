@@ -1,0 +1,14 @@
+import {ClickCounter} from "./renderer/clickCounter.js";
+import {Clock} from "./renderer/clock.js";
+import {getRequiredElement} from "./renderer/dom.js";
+
+const currentTimeElement = getRequiredElement<HTMLElement>("current-time");
+const clickOutputElement = getRequiredElement<HTMLElement>("click-output");
+const clickCountButton = getRequiredElement<HTMLButtonElement>("click-count-button");
+
+const clock = new Clock(currentTimeElement);
+const clickCounter = new ClickCounter(clickCountButton, clickOutputElement);
+
+clock.start();
+clickCounter.start();
+

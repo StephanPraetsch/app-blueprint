@@ -17,11 +17,6 @@ yarn install
 yarn dev
 ```
 
-The app includes:
-- Hello World labels
-- Current time label (updates every second)
-- `Update Something` button that updates a counter
-
 ## Releasing a New Version
 
 ```bash
