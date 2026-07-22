@@ -28,7 +28,7 @@
   },
   "build": {
     "appId": "com.stephan.appblueprint",
-    "productName": "AppBlueprint",
+    "productName": "app-blueprint",
     "electronLanguages": [
       "en-US",
       "de"
