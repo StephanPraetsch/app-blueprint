@@ -3,9 +3,10 @@
 Desktop app blueprint 
 * for building cross-platform desktop apps with Electron
 * using TypeScript, Node.js 26, Yarn
-* with a React front-end (TODO)
-* with a SQLite database (TODO)
+* with a SQLite database
 * with configuration via menu bar (TODO)
+* with a React front-end (TODO)
+* Vite for multi language support (TODO)
 
 ## Requirements
 
