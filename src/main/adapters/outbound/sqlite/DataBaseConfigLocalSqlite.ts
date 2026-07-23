@@ -1,12 +1,12 @@
 import {mkdirSync, readFileSync, writeFileSync} from "node:fs";
 import path from "node:path";
-import type {DatabasePathStore} from "../../../application/ports/DatabasePathStore.js";
+import type {DatabaseConfig} from "../../../application/ports/DatabaseConfig.js";
 
 type SettingsPayload = {
   databasePath?: string;
 };
 
-export class JsonDatabasePathStore implements DatabasePathStore {
+export class DataBaseConfigLocalSqlite implements DatabaseConfig {
   private readonly settingsFilePath: string;
   private readonly defaultDatabasePath: string;
 

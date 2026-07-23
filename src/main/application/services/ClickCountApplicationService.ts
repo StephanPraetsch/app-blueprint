@@ -1,13 +1,13 @@
 import type {ClickCountRepository, ClickCountRepositoryFactory} from "../ports/ClickCountRepository.js";
-import type {DatabasePathStore} from "../ports/DatabasePathStore.js";
+import type {DatabaseConfig} from "../ports/DatabaseConfig.js";
 
 export class ClickCountApplicationService {
-  private readonly databasePathStore: DatabasePathStore;
+  private readonly databasePathStore: DatabaseConfig;
   private readonly repositoryFactory: ClickCountRepositoryFactory;
   private activeRepositoryPath: string | null = null;
   private activeRepository: ClickCountRepository | null = null;
 
-  public constructor(databasePathStore: DatabasePathStore, repositoryFactory: ClickCountRepositoryFactory) {
+  public constructor(databasePathStore: DatabaseConfig, repositoryFactory: ClickCountRepositoryFactory) {
     this.databasePathStore = databasePathStore;
     this.repositoryFactory = repositoryFactory;
   }
